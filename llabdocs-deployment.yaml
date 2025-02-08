@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llabdocs-deployment
+  namespace: backend
+  labels:
+    app: llabdocs
+    version: "2024.1"
+    environment: production
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: llabdocs
+  template:
+    metadata:
+      labels:
+        app: llabdocs
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      volumes:
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: llabdocs-logs-pvc
+      containers:
+      - name: llabdocs
+        image: registry.digitalocean.com/lichbalab-registry/lichbalab:llabdocs-2024.1
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /logs
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 2000
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: JAVA_OPTS
+#          value: "-Xms512m -Xmx1024m"
+          value: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1024Mi"
+          requests:
+            cpu: "0.5"
+            memory: "512Mi"
+      imagePullSecrets:
+      - name: do-registry
