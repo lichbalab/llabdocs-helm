@@ -13,7 +13,7 @@ kubectl create secret generic do-registry \
 --namespace backend
 ```
 
-3  Create secret in namespace:
+3  Get LB details:
 ```bash
 doctl compute load-balancer list
 doctl compute load-balancer get <lb-id>
