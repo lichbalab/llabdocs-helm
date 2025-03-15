@@ -24,3 +24,7 @@ doctl compute certificate list
 kubectl describe configmap ingress-nginx-controller -n ingress-nginx
 kubectl patch configmap ingress-nginx-controller -n ingress-nginx --patch '{"data":{"allow-snippet-annotations":"true"}}'
 ```
+5  K8s Dashboard port forwarding:
+```bash
+kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
+```
