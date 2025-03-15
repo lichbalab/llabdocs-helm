@@ -1,0 +1,72 @@
+# Default values for llabdocs
+replicaCount: 1
+namespace: backend
+
+image:
+  repository: registry.digitalocean.com/lichbalab-registry/lichbalab
+  tag: llabdocs-2024.1
+  pullPolicy: Always
+  pullSecrets: do-registry
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/issuer: letsencrypt-nginx
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      set $is_valid "0";
+      
+      if ($http_x_api_key = "#secret&Key*123&") {
+          set $is_valid "1";
+      }
+      
+      if ($http_x_rapidapi_proxy_secret = "d5c880d0-daf3-11ef-bd9f-3190f27d3706") {
+          set $is_valid "1";
+      }
+      
+      if ($is_valid = "0") {
+          return 401;
+      }
+  hosts:
+    - host: docs.lichbalab.services
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: letsencrypt-nginx-llabdocs
+      hosts:
+        - docs.lichbalab.services
+
+resources:
+  limits:
+    cpu: 1
+    memory: 1024Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+persistence:
+  enabled: true
+  size: 10Gi
+  accessMode: ReadWriteOnce
+
+javaOpts: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
+springProfile: "prod"
+
+probes:
+  liveness:
+    initialDelaySeconds: 60
+    periodSeconds: 10
+  readiness:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 2000
+  fsGroup: 2000

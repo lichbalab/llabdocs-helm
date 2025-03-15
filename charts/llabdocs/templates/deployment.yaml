@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llabdocs-deployment
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: llabdocs
+    version: {{ .Chart.AppVersion }}
+    environment: production
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: llabdocs
+  template:
+    metadata:
+      labels:
+        app: llabdocs
+    spec:
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+      volumes:
+      - name: logs-volume
+        persistentVolumeClaim:
+          claimName: llabdocs-logs-pvc
+      containers:
+      - name: llabdocs
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        volumeMounts:
+        - name: logs-volume
+          mountPath: /logs
+        securityContext:
+          runAsUser: {{ .Values.securityContext.runAsUser }}
+          runAsGroup: {{ .Values.securityContext.runAsGroup }}
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          name: http
+        env:
+        - name: JAVA_OPTS
+          value: {{ .Values.javaOpts | quote }}
+        - name: SPRING_PROFILES_ACTIVE
+          value: {{ .Values.springProfile | quote }}
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: {{ .Values.service.port }}
+          initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: {{ .Values.service.port }}
+          initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+          periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+      imagePullSecrets:
+      - name: {{ .Values.image.pullSecrets }}
