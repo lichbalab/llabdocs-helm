@@ -1,0 +1,39 @@
+name: Build and Push Helm Chart
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'charts/llabdocs/**'
+  workflow_dispatch:
+
+env:
+  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Package Helm chart
+        run: |
+          cd charts
+          helm package llabdocs/
+          
+      - name: Push to DockerHub
+        run: |
+          cd charts
+          helm push llabdocs-*.tgz oci://registry-1.docker.io/${{ env.DOCKER_USERNAME }}/llab-helm-charts
