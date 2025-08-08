@@ -17,20 +17,6 @@ ingress:
   className: nginx
   annotations:
     cert-manager.io/issuer: letsencrypt-nginx
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      set $is_valid "0";
-      
-      if ($http_x_api_key = "#secret&Key*123&") {
-          set $is_valid "1";
-      }
-      
-      if ($http_x_rapidapi_proxy_secret = "d5c880d0-daf3-11ef-bd9f-3190f27d3706") {
-          set $is_valid "1";
-      }
-      
-      if ($is_valid = "0") {
-          return 401;
-      }
   hosts:
     - host: docs.lichbalab.services
       paths:
