@@ -36,4 +36,4 @@ jobs:
       - name: Push to DockerHub
         run: |
           cd charts
-          helm push llabdocs-*.tgz oci://registry-1.docker.io/${{ env.DOCKER_USERNAME }}/llab-helm-charts
+          helm push llabdocs-*.tgz oci://docker.io/${{ env.DOCKER_USERNAME }}/llab-helm-charts
