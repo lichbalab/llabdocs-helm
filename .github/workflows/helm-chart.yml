@@ -34,4 +34,4 @@ jobs:
         run: |
           cd charts
           CHART_VERSION=$(helm show chart llabdocs/ | grep '^version:' | awk '{print $2}')
-          helm push llabdocs-$CHART_VERSION.tgz oci://docker.io/$DOCKER_USERNAME/llab-helm-charts
+          helm push llabdocs-$CHART_VERSION.tgz oci://docker.io/$DOCKER_USERNAME
