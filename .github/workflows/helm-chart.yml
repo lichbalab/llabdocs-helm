@@ -22,15 +22,16 @@ jobs:
         with:
           version: 'latest'
 
-      - name: Helm login to Docker Hub
-        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | helm registry login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin docker.io
+      - name: Login to Docker Hub (Helm OCI)
+        run: echo "$DOCKER_PASSWORD" | helm registry login -u "$DOCKER_USERNAME" --password-stdin docker.io
 
       - name: Package Helm chart
         run: |
           cd charts
           helm package llabdocs/
-          
-      - name: Push to DockerHub
+
+      - name: Push Helm chart to Docker Hub
         run: |
           cd charts
-          helm push llabdocs-*.tgz oci://docker.io/${{ env.DOCKER_USERNAME }}/llab-helm-charts
+          CHART_VERSION=$(helm show chart llabdocs/ | grep '^version:' | awk '{print $2}')
+          helm push llabdocs-$CHART_VERSION.tgz oci://docker.io/$DOCKER_USERNAME/llab-helm-charts
