@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: llabdocs
-    version: {{ .Chart.AppVersion }}
+    version: "{{ .Chart.AppVersion }}"
     environment: production
 spec:
   replicas: {{ .Values.replicaCount }}
