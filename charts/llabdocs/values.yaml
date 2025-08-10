@@ -3,7 +3,7 @@ replicaCount: 1
 namespace: backend
 
 image:
-  repository: registry.digitalocean.com/lichbalab-registry/lichbalab
+  repository: docker.io/lichbalab/llabdocs-images
   tag: llabdocs-2024.1
   pullPolicy: Always
   pullSecrets: do-registry
