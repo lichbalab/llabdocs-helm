@@ -28,3 +28,7 @@ kubectl patch configmap ingress-nginx-controller -n ingress-nginx --patch '{"dat
 ```bash
 kubectl -n kubernetes-dashboard port-forward svc/kubernetes-dashboard-kong-proxy 8443:443
 ```
+6 ArgoCD port forwarding
+```bash
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+```
