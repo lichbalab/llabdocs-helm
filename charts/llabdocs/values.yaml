@@ -18,6 +18,7 @@ ingress:
   annotations:
     cert-manager.io/issuer: letsencrypt-nginx
   hosts:
+    - host: llabdocs.example.com
       paths:
         - path: /
           pathType: Prefix
