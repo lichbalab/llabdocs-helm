@@ -24,6 +24,11 @@ ingress:
   tls:
     - secretName: letsencrypt-nginx-llabdocs
 
+env:
+  JAVA_OPTS: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
+  SPRING_PROFILES_ACTIVE: "prod"
+  GOOGLE_CLIENT_ID: "380377059710-sjs3gin7oachut8eqvecr3tf0rsl7cs4.apps.googleusercontent.com"
+
 resources:
   limits:
     cpu: 1
