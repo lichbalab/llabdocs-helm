@@ -18,14 +18,11 @@ ingress:
   annotations:
     cert-manager.io/issuer: letsencrypt-nginx
   hosts:
-    - host: docs.lichbalab.services
       paths:
         - path: /
           pathType: Prefix
   tls:
     - secretName: letsencrypt-nginx-llabdocs
-      hosts:
-        - docs.lichbalab.services
 
 resources:
   limits:
