@@ -37,8 +37,9 @@ persistence:
   size: 10Gi
   accessMode: ReadWriteOnce
 
-javaOpts: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
-springProfile: "prod"
+env:
+  JAVA_OPTS: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
+  SPRING_PROFILES_ACTIVE: "prod"
 
 probes:
   liveness:
