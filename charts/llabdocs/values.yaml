@@ -40,7 +40,7 @@ keycloak:
   replicas: 1
   adminUser: admin
   adminPassword: change-me
-  hostname: keycloak.example.com
+  hostname: keycloak.llabdocs.tech
   proxy: edge
   service:
     port: 8443
@@ -54,7 +54,7 @@ keycloak:
     tls:
       - secretName: keycloak-tls
         hosts:
-          - keycloak.example.com
+          - keycloak.llabdocs.tech
   tls:
     secretName: keycloak-tls
     mountPath: /etc/x509/https

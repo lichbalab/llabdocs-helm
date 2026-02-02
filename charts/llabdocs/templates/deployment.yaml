@@ -41,11 +41,9 @@ spec:
         ports:
         - containerPort: {{ .Values.service.port }}
           name: http
-        env:
-        {{- range $k, $v := .Values.env }}
-        - name: {{ $k }}
-          value: {{ $v | quote }}
-        {{- end }}
+        envFrom:
+          - configMapRef:
+              name: llabdocs-config
         livenessProbe:
           httpGet:
             path: /actuator/health
