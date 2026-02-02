@@ -1,0 +1,41 @@
+{{- if .Values.keycloak.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.keycloak.replicas }}
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+        - name: keycloak
+          image: {{ .Values.keycloak.image }}
+          imagePullPolicy: IfNotPresent
+          args:
+            - start
+          ports:
+            - name: https
+              containerPort: {{ .Values.keycloak.service.targetPort }}
+          envFrom:
+            - configMapRef:
+                name: keycloak-config
+            - secretRef:
+                name: keycloak-secret
+          volumeMounts:
+            - name: keycloak-tls
+              mountPath: {{ .Values.keycloak.tls.mountPath }}
+              readOnly: true
+          resources:
+            {{- toYaml .Values.keycloak.resources | nindent 12 }}
+      volumes:
+        - name: keycloak-tls
+          secret:
+            secretName: {{ .Values.keycloak.tls.secretName }}
+{{- end }}

@@ -1,0 +1,15 @@
+{{- if .Values.keycloak.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: {{ .Values.namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: https
+      port: {{ .Values.keycloak.service.port }}
+      targetPort: {{ .Values.keycloak.service.targetPort }}
+  selector:
+    app: keycloak
+{{- end }}

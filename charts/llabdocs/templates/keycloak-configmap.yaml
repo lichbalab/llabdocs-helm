@@ -1,0 +1,18 @@
+{{- if .Values.keycloak.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-config
+  namespace: {{ .Values.namespace }}
+data:
+  KC_DB: postgres
+  KC_DB_URL_HOST: keycloak-postgres
+  KC_DB_URL_PORT: {{ .Values.keycloak.postgres.servicePort | quote }}
+  KC_DB_URL_DATABASE: {{ .Values.keycloak.postgres.database }}
+  KC_HOSTNAME: {{ .Values.keycloak.hostname }}
+  KC_PROXY: {{ .Values.keycloak.proxy }}
+  KC_HTTP_ENABLED: "false"
+  KC_HTTPS_PORT: {{ .Values.keycloak.service.targetPort | quote }}
+  KC_HTTPS_CERTIFICATE_FILE: {{ .Values.keycloak.tls.mountPath }}/tls.crt
+  KC_HTTPS_CERTIFICATE_KEY_FILE: {{ .Values.keycloak.tls.mountPath }}/tls.key
+{{- end }}

@@ -34,6 +34,40 @@ certManager:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     ingressClass: nginx
 
+keycloak:
+  enabled: false
+  image: quay.io/keycloak/keycloak:25.6.2
+  replicas: 1
+  adminUser: admin
+  adminPassword: change-me
+  hostname: keycloak.example.com
+  proxy: edge
+  service:
+    port: 8443
+    targetPort: 8443
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: llabdocs-local
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    tls:
+      - secretName: keycloak-tls
+        hosts:
+          - keycloak.example.com
+  tls:
+    secretName: keycloak-tls
+    mountPath: /etc/x509/https
+  resources: {}
+  postgres:
+    enabled: true
+    image: postgres:16
+    database: keycloak
+    username: keycloak
+    password: change-me
+    storage: 10Gi
+    servicePort: 5432
+
 env:
   JAVA_OPTS: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
   SPRING_PROFILES_ACTIVE: "prod"
