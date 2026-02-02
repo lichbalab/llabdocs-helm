@@ -16,7 +16,7 @@ ingress:
   enabled: true
   className: nginx
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-nginx
+    cert-manager.io/cluster-issuer: llabdocs-local
   hosts:
     - host: llabdocs.example.com
       paths:
@@ -28,7 +28,8 @@ ingress:
 certManager:
   clusterIssuer:
     enabled: true
-    name: letsencrypt-nginx
+    name: llabdocs-local
+    type: selfsigned
     email: lichbalab@gmail.com
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     ingressClass: nginx

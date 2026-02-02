@@ -4,6 +4,9 @@ kind: ClusterIssuer
 metadata:
   name: {{ .Values.certManager.clusterIssuer.name }}
 spec:
+  {{- if eq .Values.certManager.clusterIssuer.type "selfsigned" }}
+  selfSigned: {}
+  {{- else }}
   acme:
     email: {{ .Values.certManager.clusterIssuer.email }}
     server: {{ .Values.certManager.clusterIssuer.server }}
@@ -13,4 +16,5 @@ spec:
       - http01:
           ingress:
             class: {{ .Values.certManager.clusterIssuer.ingressClass }}
+  {{- end }}
 {{- end }}
