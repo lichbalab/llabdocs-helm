@@ -16,7 +16,7 @@ ingress:
   enabled: true
   className: nginx
   annotations:
-    cert-manager.io/issuer: letsencrypt-nginx
+    cert-manager.io/cluster-issuer: letsencrypt-nginx
   hosts:
     - host: llabdocs.example.com
       paths:
@@ -24,6 +24,14 @@ ingress:
           pathType: Prefix
   tls:
     - secretName: letsencrypt-nginx-llabdocs
+
+certManager:
+  clusterIssuer:
+    enabled: true
+    name: letsencrypt-nginx
+    email: lichbalab@gmail.com
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    ingressClass: nginx
 
 env:
   JAVA_OPTS: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"

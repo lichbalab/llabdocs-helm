@@ -36,3 +36,7 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
 ```
+8 Check helm template:
+```bash
+helm template llabdocs . --debug
+```
