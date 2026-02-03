@@ -1,5 +1,26 @@
 # llabdocs-helm
 
+1  Install ArgoCD:
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+2 Install Certificate Manager
+```bash
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.19.2/cert-manager.yaml
+```
+
+3 Install ingress nginx
+```bash
+helm upgrade --install ingress-nginx ingress-nginx \
+--repo https://kubernetes.github.io/ingress-nginx \
+--namespace ingress-nginx --create-namespace
+```
+4 Create namespace for application llabdocs
+```bash
+kubectl create namespace backend
+```
+
 1  Verify Ingress Controller is Running:
 ```bash
 kubectl get svc -n ingress-nginx

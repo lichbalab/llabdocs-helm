@@ -61,7 +61,7 @@ keycloak:
   resources: {}
   postgres:
     enabled: true
-    image: postgres:16
+    image: docker.io/library/postgres:16.2
     database: keycloak
     username: keycloak
     password: change-me
