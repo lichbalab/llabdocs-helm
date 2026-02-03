@@ -61,7 +61,7 @@ keycloak:
   resources: {}
   postgres:
     enabled: true
-    image: postgres:17
+    image: postgres:16-alpine
     database: keycloak
     username: keycloak
     password: change-me
