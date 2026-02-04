@@ -42,15 +42,16 @@ keycloak:
   adminPassword: change-me
   hostname: keycloak.llabdocs.tech
   proxy: edge
+  httpEnabled: true
   service:
-    port: 8443
-    targetPort: 8443
+    port: 8080
+    targetPort: 8080
   ingress:
     enabled: true
     className: nginx
     annotations:
       cert-manager.io/cluster-issuer: llabdocs-local
-      nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     tls:
       - secretName: keycloak-tls
         hosts:

@@ -29,13 +29,17 @@ spec:
             - secretRef:
                 name: keycloak-secret
           volumeMounts:
+            {{- if not .Values.keycloak.httpEnabled }}
             - name: keycloak-tls
               mountPath: {{ .Values.keycloak.tls.mountPath }}
               readOnly: true
+            {{- end }}
           resources:
             {{- toYaml .Values.keycloak.resources | nindent 12 }}
       volumes:
+        {{- if not .Values.keycloak.httpEnabled }}
         - name: keycloak-tls
           secret:
             secretName: {{ .Values.keycloak.tls.secretName }}
+        {{- end }}
 {{- end }}
