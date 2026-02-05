@@ -35,13 +35,14 @@ certManager:
     ingressClass: nginx
 
 keycloak:
-  enabled: false
+  enabled: true
   image: quay.io/keycloak/keycloak:25.6.2
   replicas: 1
   adminUser: admin
   adminPassword: change-me
   hostname: keycloak.llabdocs.tech
   proxy: edge
+  httpEnabled: false
   service:
     port: 8443
     targetPort: 8443
@@ -58,6 +59,10 @@ keycloak:
   tls:
     secretName: keycloak-tls
     mountPath: /etc/x509/https
+  certificate:
+    enabled: true
+    issuerName: llabdocs-local
+    issuerKind: ClusterIssuer
   resources: {}
   postgres:
     enabled: true
