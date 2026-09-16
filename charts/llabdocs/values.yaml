@@ -50,7 +50,7 @@ keycloak:
     enabled: true
     className: nginx
     annotations:
-      cert-manager.io/cluster-issuer: llabdocs-local
+#      cert-manager.io/cluster-issuer: llabdocs-local
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     tls:
       - secretName: keycloak-tls
