@@ -11,6 +11,10 @@ env:
   DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
 
+runs:
+  using: 'node24'
+  main: 'main.js'
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
