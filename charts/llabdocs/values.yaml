@@ -25,6 +25,15 @@ ingress:
   tls:
     - secretName: letsencrypt-nginx-llabdocs
 
+ingress-nginx:
+  enabled: true
+  controller:
+    service:
+      type: LoadBalancer
+    ingressClassResource:
+      name: nginx
+      default: false
+
 certManager:
   clusterIssuer:
     enabled: true
