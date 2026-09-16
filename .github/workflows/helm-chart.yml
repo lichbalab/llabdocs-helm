@@ -28,6 +28,7 @@ jobs:
       - name: Package Helm chart
         run: |
           cd charts
+          helm dependency update llabdocs/ 
           helm package llabdocs/
 
       - name: Push Helm chart to Docker Hub
