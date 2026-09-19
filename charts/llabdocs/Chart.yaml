@@ -5,8 +5,6 @@ type: application
 version: 1.9-helm
 appVersion: "2024.1"
 
-dependencies:
-  - name: ingress-nginx
-    version: 4.15.1
-    repository: https://kubernetes.github.io/ingress-nginx
-    condition: ingress-nginx.enabled
+# Примечание: ingress-nginx controller вынесен из чарта — ставится один раз на кластер
+# (helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx ...).
+# Чарт только декларирует нативные Ingress-ресурсы с ingressClassName: nginx.

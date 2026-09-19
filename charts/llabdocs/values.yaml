@@ -26,13 +26,10 @@ ingress:
     - secretName: letsencrypt-nginx-llabdocs
 
 ingress-nginx:
-  enabled: true
-  controller:
-    service:
-      type: LoadBalancer
-    ingressClassResource:
-      name: nginx
-      default: false
+  # Контроллер по умолчанию НЕ ставится чартом (зависимость убрана из Chart.yaml) —
+  # на кластере он разворачивается один раз отдельно (см. README).
+  # Флаг оставлен на случай возврата зависимости с condition.
+  enabled: false
 
 certManager:
   clusterIssuer:
@@ -69,7 +66,9 @@ keycloak:
     secretName: keycloak-tls
     mountPath: /etc/x509/https
   certificate:
-    enabled: false
+    # TLS keycloak обеспечивает cert-manager (Certificate -> Secret keycloak-tls),
+    # а НЕ ingress-nginx — поэтому включено по умолчанию.
+    enabled: true
     issuerName: llabdocs-local
     issuerKind: ClusterIssuer
   resources: {}
