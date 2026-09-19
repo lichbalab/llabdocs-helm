@@ -59,7 +59,7 @@ keycloak:
     enabled: true
     className: nginx
     annotations:
-#      cert-manager.io/cluster-issuer: llabdocs-local
+      cert-manager.io/cluster-issuer: llabdocs-local
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     tls:
       - secretName: keycloak-tls
@@ -69,7 +69,7 @@ keycloak:
     secretName: keycloak-tls
     mountPath: /etc/x509/https
   certificate:
-    enabled: true
+    enabled: false
     issuerName: llabdocs-local
     issuerKind: ClusterIssuer
   resources: {}
